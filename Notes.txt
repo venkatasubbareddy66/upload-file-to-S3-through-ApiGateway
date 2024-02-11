@@ -1,0 +1,95 @@
+Step 1 :
+
+-- open console and create bucket 
+
+--  enable  bucket versioning 
+
+-- encryption also u should enable 
+
+Step 2 :
+
+-- Create IAM Role for the API Gateway 
+
+-- IAM --> create Role --> trusted type = AWS --> Use case = API Gateway --> create Role with ( any Name)
+
+-- Now create Policy for the IAM Role 
+
+--  Policies --> create New Policy --> choose Service = s3 --> Allowed Actions = select all Actions--> Resourece = Add Arn of ur bucket and check for object Name (any)--> nxt --> give name for ur policy --> create policy 
+
+-- Now attach this policy to the Role that u have created just now 
+
+
+Step 3 
+
+-- Create Api Gateway 
+
+--  open Api Gateway console 
+
+-- select REST API --> give name for ur API -- create API 
+
+-- now we have create some Resoureces 
+
+-- click on create Resourece --> give Resourece name as {bucket}
+
+-- create another Resourece --> give resource name as {filename}
+
+-- now create Method --> Method type = PUT --> choose AWS Service as Integration type (we are directly giving S3 bucket here, coz getting error with the lambda Integration  with post method do I have  tried this ) --> choose Region(same as s3 bucket Region) --> Aws Service = S3 --> Aws Subdomain (blank)--> HTTP Method = PUT --> Action Type = Use Path Override --> path Override = {bucket}/{filename} --> Execution Role = Role Arn --> create Method
+
+-- Now Click on Integrate Request --> edit --> URL path parameters = C.O Add path Parameter , now add 2 parameter ( name = bucket , mapped From = method.request.path.bucket) , (name = filename , mapped From = method.request.path.filename) --> save 
+
+-- Now go to Api Setting --> Binary media types --> add Media types as image/jpeg , image/png , */* --> save changes 
+
+NOte : if u put */* , u can able to upload Pdf files 
+
+-- ebable CORS in API , before going to deploy for not geting any errors in future 
+
+-- now u have to Deploy ur API -- > U will get invoke Url (better to  wait for 5 min to deploy ur API )
+
+--  now open API Postman , if u do not have do downalod or do test in chrome 
+
+-- now copy the invoke Url --> select PUT Method --> give resource we have created in API /bucket/filename  after url 
+
+Eg : https://1loe0bz5i8.execute-api.ap-south-1.amazonaws.com/dev/bucketname/filename 
+
+
+-- create 3 sample files for testing purpose in ur local system 
+
+1 sample.txt
+
+2 sample2.png
+
+3 sample3.jpeg
+
+-- now paste the link in the postnman and test ur API with the sample files whether it is store in the s3 bucket or not 
+
+Note : The file is only <= 10MB Only 
+
+-- Now do test 
+
+-- open posyman APi for testing 
+
+-- copy and pate url and select PUT 
+
+eg : https://1loe0bz5i8.execute-api.ap-south-1.amazonaws.com/dev/api-bucket-upload/sample.txt 
+
+for above test example --> 
+
+Note : what i have observed is that if i have uploaded all the files (pdf,html,jpeg,png) with sample.txt format but when i check in the bucket it has uploaded all the files 
+
+-- u can also do test for .jpeg and .png also 
+
+
+==========================Done====================== 
+
+
+
+
+
+
+
+
+
+
+
+
+
